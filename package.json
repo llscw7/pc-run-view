@@ -1,0 +1,35 @@
+{
+  "name": "-",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview --port 76589",
+    "start": "vite build --emptyOutDir",
+    "check": "tsc --noEmit --watch"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "element-plus": "^2.3.1",
+    "highlight.js": "^11.9.0",
+    "marked": "^12.0.2",
+    "marked-highlight": "^2.1.0",
+    "pinia": "^2.0.33",
+    "quill": "^1.3.7",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6",
+    "vuedraggable": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/quill": "^2.0.14",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "less": "^4.1.3",
+    "typescript": "^4.9.3",
+    "unplugin-auto-import": "^0.15.1",
+    "unplugin-vue-components": "^0.24.1",
+    "vite": "^4.2.0",
+    "vue-tsc": "^1.2.0"
+  }
+}
