@@ -54,7 +54,14 @@ const setSearchListData = async (list: QuickLinkDataItem[]) => {
 }
 
 onMounted(async () => {
-  setCurrentListData(store_option.classType)
+  if(store_option.keywords) {
+    const { status, result } = await window.electronAPI.searchQuickLinkData(store_option.keywords)
+    if(status.code === 0) {
+      setSearchListData(result)
+    }
+  }else {
+    setCurrentListData(store_option.classType)
+  }
 })
 
 const goToAbout = (data: QuickLinkDataItem) => {
