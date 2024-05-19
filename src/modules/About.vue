@@ -4,6 +4,8 @@ import { Delete, Star, Position, Back, Edit } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useCardStore } from '../store/store'
 import Marked from '../components/marked/index.vue'
+import { submitData } from '../api/request'
+import { queryImage } from '../utils/util'
 
 const store = useCardStore()
 const { setAbout } = store
@@ -36,13 +38,16 @@ const markedEdit = ref(false)
 const markedPreview = ref(false)
 
 const handleSave = async () => {
-  console.log(markedRef.value.md,'[[[[]]]]')
   markedEdit.value = false
   markedPreview.value = false
   if(markedRef.value.md) {
+    const images = queryImage(markedRef.value.md)
+    submitData({images: images})
+
     setAbout(markedRef.value.md)
   }
   try {
+    console.log(nowCardData.value,';;;;;;')
     await window.electronAPI.updateQuickLinkData(nowCardData.value._id, JSON.stringify(nowCardData.value))
   }catch(err) {
     console.error('更新卡片出错：', err)

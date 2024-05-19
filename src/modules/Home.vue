@@ -30,7 +30,7 @@ const initListData = (table: string) => {
         return {}
       }
     }).catch((err: any) => {
-      console.log(err)
+      console.error(err)
       return {}
     })
   }
@@ -105,7 +105,6 @@ const editCard = (cardData: QuickLinkDataItem) => {
   dialogFormVisible.value = true
 }
 const closeDialog = () => {
-  console.log('测试数据0000')
   dialogFormVisible.value = false
 }
 

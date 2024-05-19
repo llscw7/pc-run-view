@@ -47,7 +47,6 @@ const $reset = () => {
 
 const html = computed(() => {
   // const format = md.value.replace(/\n/g, "<br>")
-  console.log(marked.parse(md.value),'00000', md.value)
   return marked.parse(md.value);
 });
 
@@ -71,7 +70,6 @@ const predefineColors = ref([
 ])
 const changeColor = (color: string | null) => {
   updateMD(`<span style="color: ${color}">示例文本</span>`)
-  console.log(color,'???---')
 }
 
 const updateMD = (content: string) => {
@@ -82,7 +80,6 @@ const updateMD = (content: string) => {
  * 支持通过复制粘贴上传图片
  */
 const handlePaste = (event: ClipboardEvent) => {
-  console.log('粘贴事件触发',event.clipboardData?.types);
   const types = event.clipboardData?.types;
   if (types?.includes('Files')) {
     const items: any = event.clipboardData?.items

@@ -3,9 +3,9 @@ import axios, { AxiosResponse, AxiosError } from 'axios'
 const http = axios.create({
     baseURL: 'http://localhost:38435/',
     timeout: 5000,
-    headers: {
-        'Content-Type': 'multipart/form-data',
-    }
+    // headers: {
+    //     'Content-Type': 'multipart/form-data',
+    // }
 });
 
 

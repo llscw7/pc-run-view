@@ -62,7 +62,6 @@ const handleDelete = (data: tbNameItem) => {
       //TODO: 删除数据库中的分类
       cacheData.value.push(data.value)
       const result = await window.electronAPI.deleteClassify(data._id, data.value)
-      console.log(result,';;;.....')
       if(result) {
         ElMessage({
           type: 'success',

@@ -52,8 +52,55 @@ function formatTime(date: Date) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+/**
+ * 查询markdown中的图片
+ * 兼容<img />情况 & 存在外部url的图片的情况
+ * @param text 
+ * @returns 
+ */
+const queryImage = (text: string) => {
+  const arr = []
+  let l = 0
+  let r = 0
+  let first = false
+  while(r < text.length) {
+    if(text.substring(r, r+24) === '(http://localhost:38435/') {
+      l = r + 24
+      r = r + 25
+      first = true
+    }
+    if(text[r] === ')' && first) {
+      arr.push(text.substring(l, r))
+      first = false
+    }
+    r++
+  }
+  const res = queryImageByHTML(text)
+  arr.concat(res)
+  console.log(arr,'======', text)
+  return arr
+}
+
+const queryImageByHTML = (text: string) => {
+  const arr: string[] = []
+
+  const regex = /<img.*?src=(?:"(.*?)"|'(.*?)').*?>/g;
+  const matches = text.match(regex);
+
+  if (matches) {
+    matches.forEach((match: any) => {
+      const src = match.match(/src=(?:"(.*?)"|'(.*?)')/)[1] || match.match(/src=(?:"(.*?)"|'(.*?)')/)[2];
+      console.log(match.match(/src=(?:"(.*?)"|'(.*?)')/), '---');
+      const name = src.split('http://localhost:38435/')[1]
+      arr.push(name)
+    });
+  }
+  return arr
+}
+
 
 export {
   formatListData,
-  formatTime
+  formatTime,
+  queryImage
 }

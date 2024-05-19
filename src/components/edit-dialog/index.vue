@@ -4,10 +4,9 @@ import UploadImage from '../upload-image/index.vue'
 import StartLink from '../start-link/index.vue'
 import { useOptionStore } from '../../store/store'
 // import WebSocketClient from '../../utils/ws'
-import Quill from '../quill/index.vue'
 import Marked from '../marked/index.vue'
-
-const quillRef = ref()
+import { submitData } from '../../api/request'
+import { queryImage } from '../../utils/util'
 
 // const client = new WebSocketClient({
 //   url: 'ws://localhost:56743/capture_view',
@@ -110,6 +109,21 @@ const submit = async () => {
     form.about = markedRef.value.md
   }
 
+  const images = []
+  if(form.img && form.img.includes('http://localhost:38435/')) {
+    const img = form.img.split('http://localhost:38435/')[1]
+    images.push(img)
+  }
+  if(form.banner && form.banner.includes('http://localhost:38435/')) {
+    const banner = form.banner.split('http://localhost:38435/')[1]
+    images.push(banner)
+  }
+  const tmp = queryImage(form.about)
+  if(tmp && tmp.length) {
+    images.concat(tmp)
+  }
+  await submitData({images})
+
   if(type.value === 'create') {
     const id = await window.electronAPI.encodeById(form.title)
     form.id = id
@@ -182,11 +196,6 @@ const onCloseDialog = () =>{
       <el-form-item label="简介内容" :label-width="formLabelWidth">
         <!-- <el-input v-model="form.about" autocomplete="off" type="textarea" :rows="2" /> -->
         <Marked :value="form.about" :markedEdit="true" ref="markedRef" />
-        <!-- <Quill
-        :initData="form.about"
-        :type="1"
-        ref="quillRef"
-        ></Quill> -->
       </el-form-item>
       <el-form-item label="启动链接" :label-width="formLabelWidth">
         <el-input v-model="form.startLink" autocomplete="off" />
