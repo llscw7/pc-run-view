@@ -32,7 +32,7 @@ export const useCardStore = defineStore('cardContent', {
             localStorage.setItem('cardData', JSON.stringify(data))
         },
         setAbout(about: string) {
-            this.cardData = Object.assign({}, this.cardData, {about: about})
+            this.cardData = Object.assign({}, this.nowCardData, {about: about})
             localStorage.setItem('cardData', JSON.stringify(this.cardData))
         }
     }

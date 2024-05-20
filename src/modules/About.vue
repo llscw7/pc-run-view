@@ -47,7 +47,6 @@ const handleSave = async () => {
     setAbout(markedRef.value.md)
   }
   try {
-    console.log(nowCardData.value,';;;;;;')
     await window.electronAPI.updateQuickLinkData(nowCardData.value._id, JSON.stringify(nowCardData.value))
   }catch(err) {
     console.error('更新卡片出错：', err)
