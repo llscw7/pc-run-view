@@ -88,12 +88,12 @@ const form = reactive(Object.assign({
   custom_col: []
 }, nowCardData.value))
 
-const setImageUrl = (url: string) => {
-  form.img = url
+const setImageUrl = (data: ImageItem) => {
+  form.img = data.url
 }
 
-const setBannerUrl = (url: string) => {
-  form.banner = url
+const setBannerUrl = (data: ImageItem) => {
+  form.banner = data.url
 }
 
 const setStartLink = (url: string) => {

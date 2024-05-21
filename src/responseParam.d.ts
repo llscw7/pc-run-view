@@ -34,6 +34,11 @@ interface SortableEvent extends Event {
   newIndex: number;
 }
 
+interface ImageItem {
+  url: string;
+  name: string
+}
+
 declare namespace ResponseParam {
   interface status {
     code: number;

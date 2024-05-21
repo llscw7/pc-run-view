@@ -7,9 +7,12 @@ const emits = defineEmits(['captureImage'])
 const props = withDefaults(defineProps<{
   imageUrl: string,
   source: string,
+  slotUse: boolean,
   setImageUrl: Function
 }>(), {
   imageUrl: '',
+  source: '',
+  slotUse: false,
 })
 
 const previewVisible = ref(false)
@@ -34,7 +37,7 @@ const handleSelect = ()=>{
   window.electronAPI.selectImage().then((res: any)=>{
     if(res.status.code === 0) {
       if(res.result) {
-        props.setImageUrl(res.result.url)
+        props.setImageUrl({url: res.result.url, name: res.result.name})
         imageTitle.value = res.result.name
       }
     }else {
@@ -50,9 +53,12 @@ const handleCapture = () => {
 
 <template>
   <div class="upload-image">
-    <div class="upload-image-wrap">
-      <el-button type="primary" @click="handleSelect">选择图片</el-button>
-      <el-button type="primary" @click="handleCapture" v-if="false">截图</el-button>
+    <div class="upload-image-wrap" :class="{'wrap-inline': slotUse}">
+      <span v-if="slotUse" @click="handleSelect"><slot></slot></span>
+      <template v-if="!slotUse">
+        <el-button type="primary" @click="handleSelect">选择图片</el-button>
+        <el-button type="primary" @click="handleCapture" v-if="false">截图</el-button>
+      </template>
       <div class="image-list" v-if="imageUrl">
         <div class="image-list-wrap" @click="handlePreview">
           <el-icon class="image-file"><Document /></el-icon>
@@ -74,6 +80,9 @@ const handleCapture = () => {
 </template>
 
 <style lang="less" scoped>
+.upload-image {
+  display: inline-block;
+}
 .upload-image-wrap {
   margin:5px 0;
   .image-list {
