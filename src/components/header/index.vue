@@ -195,7 +195,7 @@ onMounted(async ()=>{
       <el-button type="primary" round @click="importDatabase">导入数据库</el-button>
       <el-button type="primary" round @click="createOptionClass">新增分类</el-button>
     </div>
-    <div class="options-tips">自动扫描所选目录下的所有exe文件，生成快捷启动卡片</div>
+    <!-- <div class="options-tips">自动扫描所选目录下的所有exe文件，生成快捷启动卡片</div> -->
     <div class="header-options" v-if="store_option.keywords">
       <el-button type="primary" round @click="closeSearch">{{ store_option.keywords }}&nbsp;<el-icon>
           <CloseBold />

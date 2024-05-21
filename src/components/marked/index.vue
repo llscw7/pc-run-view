@@ -39,6 +39,8 @@ marked.use({
 
 const md = ref(props.value.trim())
 
+const markedInput = ref()
+
 const { markedEdit, markedPreview } = toRefs(props)
 
 const $reset = () => {
@@ -73,7 +75,12 @@ const changeColor = (color: string | null) => {
 }
 
 const updateMD = (content: string) => {
-  md.value += '\n' + content
+  const textarea = markedInput.value.$refs.textarea
+  const startPos = textarea.selectionStart;
+  const endPos = textarea.selectionEnd;
+  md.value = md.value.substring(0, startPos)
+        + '\n' + content
+        + md.value.substring(endPos, md.value.length);
 }
 
 /**
@@ -138,7 +145,7 @@ defineExpose({
         <div class="toolbar-button icon-embed2" @click="updateMD('```\n示例文本\n```')"></div>
         <div class="toolbar-button icon-link" @click="updateMD('[示例链接](https://www.baidu.com)')"></div>
 
-        <div class="toolbar-button icon-image"></div>
+        <div class="toolbar-button icon-image" ></div>
         
         <div class="toolbar-button icon-list-numbered" @click="updateMD('1. 第一项\n2. 第二项\n    1. 子项1')"></div>
         <div class="toolbar-button icon-list2" @click="updateMD('- 第一项\n- 第二项\n    - 子项1')"></div>
@@ -160,6 +167,7 @@ defineExpose({
           @paste="handlePaste"
           type="textarea"
           placeholder="Please input"
+          ref="markedInput"
         />
       </div>
     </div>
