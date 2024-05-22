@@ -158,8 +158,9 @@ const editCard = ()=>{
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 50px;
-  padding-bottom: 30px;
+  margin-top: 70px;
+  margin-bottom: 30px;
+  border-radius: 8px;
   background-color: var(--background-color-default);
   .about-options {
     position: fixed;

@@ -141,7 +141,7 @@ defineExpose({
     
     <div class="marked-toolbar" v-if="markedEdit">
       <div class="toolbar-wrap">
-        <div class="toolbar-button" style="font-weight: bold;font-size: 16px;" @click="updateMD('## 示例文本')">H</div>
+        <div class="toolbar-button icon-font-size" @click="updateMD('## 示例文本')"></div>
         <div class="toolbar-button icon-bold" @click="updateMD('**示例文本**')"></div>
         <div class="toolbar-button icon-underline" @click="updateMD('<u>示例文本</u>')"></div>
         <div class="toolbar-button icon-italic" @click="updateMD('_示例文本_')"></div>
@@ -158,10 +158,10 @@ defineExpose({
         <div class="toolbar-button icon-list2" @click="updateMD('- 第一项\n- 第二项\n    - 子项1')"></div>
         <!-- <div class="toolbar-button icon-indent-decrease"></div> -->
         <!-- <div class="toolbar-button icon-indent-increase"></div> -->
-        <div class="toolbar-button icon-paragraph-left"></div>
+        <!-- <div class="toolbar-button icon-paragraph-left"></div>
         <div class="toolbar-button icon-paragraph-center"></div>
         <div class="toolbar-button icon-paragraph-right"></div>
-        <div class="toolbar-button icon-paragraph-justify"></div>
+        <div class="toolbar-button icon-paragraph-justify"></div> -->
         <el-color-picker v-model="color" show-alpha :predefine="predefineColors" size="small" @change="changeColor" />
       </div>
     </div>
