@@ -1,22 +1,24 @@
 import { defineStore } from 'pinia'
 
 export const useCardStore = defineStore('cardContent', {
-    state: ()=> ({ 
-        cardData: {
-            id: '',
-            title: '',
-            img: '',
-            factory: '',
-            createTime: '',
-            banner: '',
-            about: '',
-            startLink: '',
-            src: '',
-            tags: [''],
-            title_cn: '',
-            _id: '',
-        },
-    }),
+    state: ()=> {
+        return {
+            cardData: {
+                id: '',
+                title: '',
+                img: '',
+                factory: '',
+                createTime: '',
+                banner: '',
+                about: '',
+                startLink: '',
+                src: '',
+                tags: [''],
+                title_cn: '',
+                _id: '',
+            } as QuickLinkDataItem
+        }
+    },
     getters: {
         nowCardData: (state) => {
             if(state.cardData && state.cardData.id) {

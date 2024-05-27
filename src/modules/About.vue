@@ -1,18 +1,87 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, Ref } from 'vue'
 import { Delete, Star, Position, Back, Edit } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useCardStore } from '../store/store'
 import Marked from '../components/marked/index.vue'
 import { submitData } from '../api/request'
 import { queryImage } from '../utils/util'
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const store = useCardStore()
 const { setAbout } = store
 const {nowCardData} = storeToRefs(store)
+const collectList: Ref<collectListParam[]> = ref([])
 
 const goBack = () => {
   history.back()
+}
+
+const handleCollect = () => {
+  window.electronAPI.getCollectList()
+    .then((res: any) => {
+      collectList.value = res
+    })
+    .catch((err: any) => {
+      console.error('获取收藏列表错误: ', err)
+    })
+}
+
+const collectCard = (cardData: QuickLinkDataItem, col: collectListParam) => {
+  if(cardData?.custom_col?.includes(col.value)) {
+    window.electronAPI.cancelCollect(cardData._id, col.value)
+    .then((res: any)=>{
+      ElMessage('已经取消收藏')
+      cardData.custom_col = cardData.custom_col?.filter((item: string) => item !== col.value)
+    })
+    .catch((err: any)=>{
+      console.error('卡片取消收藏错误: ', err)
+    })
+  }else {
+    window.electronAPI.collect(cardData._id, col.value)
+      .then((res: any) => {
+        ElMessage('已收藏')
+        cardData.custom_col?.push(col.value)
+      })
+      .catch((err: any) => {
+        console.error('卡片收藏错误: ', err)
+      })
+  }
+}
+
+/**
+ * 删除卡片
+ */
+ const handleDelete = () => {
+  ElMessageBox.confirm(
+    '确认删除该卡片？',
+    'Warning',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+    const id = nowCardData.value._id
+    window.electronAPI.deleteQuickLinkData(id).catch((err:any) => {
+      console.error('卡片删除错误: ', err)
+    })
+    ElMessage({
+      type: 'success',
+      duration: 1000,
+      message: 'Delete completed',
+    })
+    setTimeout(()=>{
+      router.replace({path: '/'})
+    }, 1000)
+  }).catch((err) => {
+    console.error('卡片删除错误: ', err)
+    ElMessage({
+      type: 'info',
+      message: 'Delete canceled',
+    })
+  })
 }
 
 const startEXE = () => {
@@ -94,9 +163,25 @@ const editCard = ()=>{
           circle
           @click="startEXE"
          />
-        <el-button class="about-options__item" title="收藏" type="warning" :icon="Star" circle />
+        <el-popover
+          popper-class="collect-popper"
+          :width="200"
+          placement="left-end"
+          :show-arrow="false"
+          :teleported="false"
+          @show="handleCollect"
+        >
+          <template #reference>
+            <el-button class="about-options__item" title="收藏" type="warning" :icon="Star" circle />
+          </template>
+          <ul class="collect-list">
+            <li v-for="item in collectList" class="collect-list-item" :class="{'actived': nowCardData.custom_col?.includes(item.value)}" @click="collectCard(nowCardData, item)">
+              {{ item.name }}
+            </li>
+          </ul>
+        </el-popover>
         <el-button class="about-options__item" title="编辑" type="info" :icon="Edit" circle @click="editCard" />
-        <el-button class="about-options__item" title="删除" type="danger" :icon="Delete" circle />
+        <el-button class="about-options__item" title="删除" type="danger" :icon="Delete" circle @click="handleDelete" />
       </div>
     </div>
   </div>
@@ -183,5 +268,22 @@ const editCard = ()=>{
 }
 #page-editor-about-edit, #page-editor-about-view {
   width: 100%;
+}
+.collect-popper {
+  .collect-list {
+    padding: 5px;
+    box-sizing: border-box;
+    .collect-list-item {
+      padding: 10px 20px;
+      box-sizing: border-box;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--background-color-popper-hover);
+      }
+    }
+    .collect-list-item.actived {
+      background-color: var(--background-color-popper-hover);
+    }
+  }
 }
 </style>
