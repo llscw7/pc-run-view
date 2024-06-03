@@ -19,6 +19,8 @@ const store_option = useOptionStore()
 
 const headerRef = ref()
 
+const menuFlag = ref(false)
+
 const quickLinkData: Ref<QuickLinkDataItem[]> = ref([])
 
 const initListData = (table: string) => {
@@ -108,10 +110,19 @@ const closeDialog = () => {
   dialogFormVisible.value = false
 }
 
+const changeMenu = () => {
+  menuFlag.value = !menuFlag.value
+}
 </script>
 
 <template>
   <div class="home">
+    <div class="nav">
+      <span class="icon-menu" @click="changeMenu"></span>
+      <div class="nav-container">
+
+      </div>
+    </div>
     <Header ref="headerRef" :setCurrentListData="setCurrentListData" @setSearchListData="setSearchListData"></Header>
     <MoreLineList 
       v-if="false"
@@ -146,5 +157,14 @@ const closeDialog = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.nav {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background-color: #fff;
+
 }
 </style>
