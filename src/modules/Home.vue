@@ -119,8 +119,13 @@ const changeMenu = () => {
   <div class="home">
     <div class="nav">
       <span class="icon-menu" @click="changeMenu"></span>
-      <div class="nav-container">
-
+      <div class="nav-container" :class="{'actived': menuFlag}">
+        <ul class="list">
+          <li class="list-wrap">
+            <div class="list-icon"></div>
+            <div class="list-content" v-if="menuFlag">测试数据</div>
+          </li>
+        </ul>
       </div>
     </div>
     <Header ref="headerRef" :setCurrentListData="setCurrentListData" @setSearchListData="setSearchListData"></Header>
@@ -163,8 +168,28 @@ const changeMenu = () => {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 20px;
+  z-index: 99;
   background-color: #fff;
-
+  .nav-container {
+    position: relative;
+    width: 50px;
+    background-color: #fff;
+    transition: all 0.1s ease;
+  }
+  .nav-container.actived {
+    width: 150px;
+  }
+  .list-wrap {
+    display: flex;
+    align-items: center;
+    .list-icon {
+      background: url('../static/gpt.jpeg') no-repeat;
+      width: 30px;
+      height: 30px;
+      background-size: contain;
+    }
+    .list-content {
+    }
+  }
 }
 </style>
