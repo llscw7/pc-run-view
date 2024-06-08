@@ -14,6 +14,7 @@ import {
   Location,
   Setting,
 } from '@element-plus/icons-vue'
+import menusvg from './menu.svg'
 
 
 const isCollapse = ref(false)
@@ -134,14 +135,17 @@ const changeMenu = () => {
 <template>
   <div class="home">
     <div class="nav">
-      <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
+      <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
         <el-radio-button :value="false">expand</el-radio-button>
         <el-radio-button :value="true">collapse</el-radio-button>
-      </el-radio-group>
+      </el-radio-group> -->
+      <div class="menu-button" @click="changeMenu">
+        <img class="menu-icon" :src="menusvg" alt="" >
+      </div>
       <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
-        :collapse="isCollapse"
+        :collapse="menuFlag"
         @open="handleOpen"
         @close="handleClose"
       >
@@ -240,6 +244,13 @@ const changeMenu = () => {
     }
     .list-content {
     }
+  }
+  .menu-button {
+    cursor: pointer;
+  }
+  .menu-icon {
+    width: 30px;
+    height: 30px;
   }
 }
 </style>
