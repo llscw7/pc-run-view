@@ -241,6 +241,9 @@ onMounted(async ()=>{
       .header-filter-wrap {
         display: flex;
         align-items: center;
+        /deep/ .el-select__selection {
+          min-width: 60px;
+        }
         .edit-icon {
           margin-left: 10px;
           color: var(--text-color-active);
