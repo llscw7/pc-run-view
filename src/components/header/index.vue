@@ -241,7 +241,7 @@ onMounted(async ()=>{
       .header-filter-wrap {
         display: flex;
         align-items: center;
-        /deep/ .el-select__selection {
+        :deep(.el-select__selection) {
           min-width: 60px;
         }
         .edit-icon {
