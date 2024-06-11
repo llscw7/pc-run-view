@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import {
-  Document,
   Menu as IconMenu,
   Setting,
   Picture
 } from '@element-plus/icons-vue'
 import menusvg from './static/menu.svg'
+
+
+const route = useRoute()
+
+const activedTab = ref(route.path)
 
 const menuFlag = ref(true)
 
@@ -21,6 +26,10 @@ const changeMenu = () => {
   menuFlag.value = !menuFlag.value
 }
 
+watch(route, (cur, pre)=>{
+  activedTab.value = cur.path
+})
+
 </script>
 
 <template>
@@ -30,8 +39,8 @@ const changeMenu = () => {
         <img class="menu-icon" :src="menusvg" alt="" >
       </div>
       <el-menu
-        default-active="/"
         class="el-menu-vertical-demo"
+        :default-active="activedTab"
         :collapse="menuFlag"
         :router="true"
         @open="handleOpen"
