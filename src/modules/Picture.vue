@@ -25,19 +25,23 @@ onMounted(async ()=>{
 
 <style lang="less" scoped>
 .picture {
-    width: 800px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--background-color-card);
     padding: 20px;
-    border-radius: 5px;
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
     .picture-gallery {
+        width: 800px;
+        background-color: var(--background-color-card);
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+        
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 10px;
-        padding: 10px;
+        // grid-template-columns: repeat(3, 80px) / auto-flow;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-auto-rows: minmax(auto, 300px);
+        grid-gap: 10px;
     }
     .picture-wrap {
         position: relative;
@@ -45,7 +49,7 @@ onMounted(async ()=>{
         .image {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             display: block;
         }
     }
