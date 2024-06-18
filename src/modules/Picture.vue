@@ -6,15 +6,32 @@ const images = ref<string[]>([])
 
 onMounted(async ()=>{
     const res = await getAllImages()
-
     images.value = res
+    const msgs = []
+    for(let v of res.slice(0,10)) {
+        const msg = await getImageMessage(v)
+        msgs.push(msg)
+    }
+    console.log(msgs,'====000')
 })
+
+const getImageMessage = async (url: string) => {
+    const img = new Image()
+    return new Promise((resolve, reject) => {
+        img.onload = (...args) => {
+            resolve({
+                width: img.width,
+                height: img.height
+            })
+        }
+        img.src = url
+    })
+}
 
 </script>
 
 <template>
     <div class="picture">
-        图片管理器
         <div class="picture-gallery">
             <div class="picture-wrap" v-for="(item, index) in images" :key="index">
                 <img class="image" :src="item" alt="" >
@@ -49,7 +66,7 @@ onMounted(async ()=>{
         .image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
         }
     }
