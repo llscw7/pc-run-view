@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getAllImages } from '../api/request'
+import BigNumber from "bignumber.js";
 
 const images = ref<string[]>([])
 
@@ -13,12 +14,49 @@ onMounted(async ()=>{
         msgs.push(msg)
     }
     console.log(msgs,'====000')
+    test(msgs)
 })
+
+const test = (arr: any, w = 800) => {
+    let width = Infinity
+    let index = -1
+    for(let i = 0; i < arr.length; i++) {
+        if(width > arr[i].width) {
+            width = arr[i].width
+            index = i
+        }
+    }
+    console.log(width, '====', index)
+    let maxH = arr[index].height
+    const res = testW(arr, maxH)
+    if(res) {
+        
+    }
+}
+
+const testW = (arr: any, maxH: number) => {
+    let sum = 0
+    let res = []
+    for(let i = 0; i < arr.length; i++) {
+        const w = new BigNumber(arr[i].width)
+        const h = new BigNumber(arr[i].height)
+        const tmp = new BigNumber(maxH)
+        const newW = w.div(h).times(tmp).toFormat(0).toString()
+        sum += +newW
+        res.push({
+            width: newW,
+            height: maxH
+        })
+        if(sum > 800) return false
+        if(sum === 800) return res
+        console.log(newW,'------222')
+    }
+}
 
 const getImageMessage = async (url: string) => {
     const img = new Image()
     return new Promise((resolve, reject) => {
-        img.onload = (...args) => {
+        img.onload = () => {
             resolve({
                 width: img.width,
                 height: img.height
