@@ -27,7 +27,7 @@ const test = (arr: any, w = 800) => {
         }
     }
     console.log(width, '====', index)
-    let maxH = arr[index].height
+    let maxH = arr[index]?.height || 0
     const res = testW(arr, maxH)
     if(res) {
         
