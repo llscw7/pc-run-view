@@ -127,6 +127,7 @@ const submit = async () => {
   if(type.value === 'create') {
     const id = await window.electronAPI.encodeById(form.title)
     form.id = id
+    form._id = id
     window.electronAPI.addQuickLinkData(JSON.stringify(form)).catch((err: Error)=>{
       console.log('新增卡片出错：', err)
     })
