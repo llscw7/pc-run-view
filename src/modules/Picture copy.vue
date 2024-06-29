@@ -86,25 +86,22 @@ const getImageMessage = async (url: string) => {
     align-items: center;
     
     .picture-gallery {
-        width: 900px;
+        width: 800px;
         background-color: var(--background-color-card);
         padding: 20px;
         border-radius: 5px;
         margin-top: 20px;
         
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        // grid-template-columns: repeat(3, 80px) / auto-flow;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-auto-rows: minmax(auto, 300px);
+        grid-gap: 10px;
     }
     .picture-wrap {
         position: relative;
         overflow: hidden;
-        flex: 1 0 auto;
-        height: 150px;
-        padding: 2px;
         .image {
-            // max-width: 300px;
-            // max-height: 400px;
-            // width: 100%;
             width: 100%;
             height: 100%;
             object-fit: cover;
