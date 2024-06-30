@@ -73,6 +73,9 @@ const getImageMessage = async (url: string) => {
         <div class="picture-gallery">
             <div class="picture-wrap" v-for="(item, index) in images" :key="index">
                 <img class="image" :src="item" alt="" >
+                <div class="picture-mask">
+
+                </div>
             </div>
         </div>
     </div>
@@ -97,19 +100,30 @@ const getImageMessage = async (url: string) => {
     }
     .picture-wrap {
         position: relative;
-        overflow: hidden;
         flex: 1 0 auto;
-        height: 150px;
-        padding: 2px;
+        margin: 2px;
+        box-sizing: border-box;
         .image {
-            // max-width: 300px;
-            // max-height: 400px;
-            // width: 100%;
+            position: relative;
             width: 100%;
-            height: 100%;
+            height: 200px;
             object-fit: cover;
             display: block;
         }
+        
     }
+    .picture-wrap:hover {
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.2);
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+    }
+    
 }
 </style>
