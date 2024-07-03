@@ -3,11 +3,16 @@ import { ref, onMounted } from 'vue'
 import { getAllImages } from '../api/request'
 import BigNumber from "bignumber.js";
 
-const images = ref<string[]>([])
+const picture = ref<PictureItem[]>([])
 
 onMounted(async ()=>{
     const res = await getAllImages()
-    images.value = res
+    picture.value = res.map((item: string)=>{
+        return {
+            url: item,
+            checked: false,
+        }
+    })
     const msgs = []
     for(let v of res.slice(0,10)) {
         const msg = await getImageMessage(v)
@@ -66,15 +71,17 @@ const getImageMessage = async (url: string) => {
     })
 }
 
+const checked3 = ref(false)
+
 </script>
 
 <template>
     <div class="picture">
         <div class="picture-gallery">
-            <div class="picture-wrap" v-for="(item, index) in images" :key="index">
-                <img class="image" :src="item" alt="" >
-                <div class="picture-mask">
-
+            <div class="picture-wrap" v-for="(item, index) in picture" :key="index">
+                <img class="image" :src="item.url" alt="" >
+                <div class="picture-select" :class="{'actived': item.checked}">
+                    <el-checkbox class="select-item" :class="{'actived': item.checked}" v-model="item.checked" />
                 </div>
             </div>
         </div>
@@ -103,6 +110,8 @@ const getImageMessage = async (url: string) => {
         flex: 1 0 auto;
         margin: 2px;
         box-sizing: border-box;
+        border-radius: 4px;
+        overflow: hidden;
         .image {
             position: relative;
             width: 100%;
@@ -124,6 +133,39 @@ const getImageMessage = async (url: string) => {
             bottom: 0;
         }
     }
-    
+    .picture-select {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        .select-item {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: 15px;
+            visibility: hidden;
+        }
+        .select-item.actived {
+            visibility: visible;
+        }
+        &:hover {
+            .select-item {
+                visibility: visible;
+            }
+        }
+        :deep(.el-checkbox__inner) {
+            background-color: rgba(0, 0, 0, 0.5)
+        }
+        :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+            background-color: var(--el-checkbox-checked-bg-color)
+        }
+    }
+    .picture-select.actived {
+        // border: 3px solid #4091ff;
+        box-shadow: inset 0px 0px 0px 3px #4091ff;
+        border-radius: 4px;
+    }
 }
 </style>

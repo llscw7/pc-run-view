@@ -39,6 +39,11 @@ interface ImageItem {
   name: string
 }
 
+interface PictureItem {
+  url: string;
+  checked: boolean;
+}
+
 declare namespace ResponseParam {
   interface status {
     code: number;
