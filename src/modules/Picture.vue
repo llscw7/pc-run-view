@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { getAllImages } from '../api/request'
 import BigNumber from "bignumber.js";
+import { Close, Sort, More } from '@element-plus/icons-vue'
 
 const picture = ref<PictureItem[]>([])
 
@@ -71,12 +72,30 @@ const getImageMessage = async (url: string) => {
     })
 }
 
-const checked3 = ref(false)
+const count = computed(()=>{
+    return picture.value.filter(item=>item.checked).length
+})
 
 </script>
 
 <template>
     <div class="picture">
+        <!-- TODO: 增加工具栏，处理图片多选情况 -->
+        <div class="toolbar">
+            <div class="title">
+                所有图片（{{picture.length}} 张）
+            </div>
+            <div class="tool select" v-if="count">
+                <el-icon :size="18"><Close /></el-icon>
+                <span>已选择 {{count}}</span>
+            </div>
+            <div class="tool sort">
+                <el-icon :size="17"><Sort /></el-icon>
+            </div>
+            <div class="tool more">
+                <el-icon :size="17"><More /></el-icon>
+            </div>
+        </div>
         <div class="picture-gallery">
             <div class="picture-wrap" v-for="(item, index) in picture" :key="index">
                 <img class="image" :src="item.url" alt="" >
@@ -94,6 +113,49 @@ const checked3 = ref(false)
     display: flex;
     flex-direction: column;
     align-items: center;
+    .toolbar {
+        position: relative;
+        width: 900px;
+        background-color: var(--background-color-card);
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .tool {
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1)
+            }
+        }
+        .select {
+            width: 90px;
+            span {
+                margin-left: 2px;
+                line-height: 30px;
+            }
+        }
+        .sort {
+            width: 30px;
+        }
+        .more {
+            width: 30px;
+        }
+        .title {
+            position: absolute;
+            left: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            float: right;
+        }
+    }
     
     .picture-gallery {
         width: 900px;

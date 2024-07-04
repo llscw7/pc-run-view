@@ -39,7 +39,7 @@ watch(route, (cur, pre)=>{
         <img class="menu-icon" :src="menusvg" alt="" >
       </div>
       <el-menu
-        class="el-menu-vertical-demo"
+        class="el-menu-vertical"
         :default-active="activedTab"
         :collapse="menuFlag"
         :router="true"
@@ -78,7 +78,7 @@ watch(route, (cur, pre)=>{
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 99;
+  z-index: 9999;
   background-color: #fff;
   .nav-container {
     position: relative;
@@ -113,7 +113,7 @@ watch(route, (cur, pre)=>{
 }
 </style>
 <style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+.el-menu-vertical:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
 }
