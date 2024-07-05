@@ -2,7 +2,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { getAllImages } from '../api/request'
 import BigNumber from "bignumber.js";
-import { Close, Sort, More } from '@element-plus/icons-vue'
+import { Close, Sort, More, Delete } from '@element-plus/icons-vue'
+import { ElMessageBox } from 'element-plus'
 
 const picture = ref<PictureItem[]>([])
 
@@ -76,6 +77,29 @@ const count = computed(()=>{
     return picture.value.filter(item=>item.checked).length
 })
 
+const handleCancel = () => {
+    picture.value = picture.value.map(item=>{
+        item.checked = false
+        return item
+    })
+}
+
+const handleDelete = () => {
+    ElMessageBox.confirm(
+        '这些项目将被彻底删除',
+        `删除这个${count.value}项目？`,
+        {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+        }
+    )
+    .then(() => {
+        console.log('删除项目')
+    })
+    .catch(() => {
+        console.log('取消删除')
+    })
+}
 </script>
 
 <template>
@@ -85,9 +109,12 @@ const count = computed(()=>{
             <div class="title">
                 所有图片（{{picture.length}} 张）
             </div>
-            <div class="tool select" v-if="count">
+            <div class="tool select" v-if="count" @click="handleCancel">
                 <el-icon :size="18"><Close /></el-icon>
                 <span>已选择 {{count}}</span>
+            </div>
+            <div class="tool delete" v-if="count" @click="handleDelete">
+                <el-icon :size="18"><Delete /></el-icon>
             </div>
             <div class="tool sort">
                 <el-icon :size="17"><Sort /></el-icon>
@@ -146,6 +173,9 @@ const count = computed(()=>{
             width: 30px;
         }
         .more {
+            width: 30px;
+        }
+        .delete {
             width: 30px;
         }
         .title {

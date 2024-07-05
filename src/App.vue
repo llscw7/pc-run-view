@@ -78,7 +78,7 @@ watch(route, (cur, pre)=>{
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 2000;
   background-color: #fff;
   .nav-container {
     position: relative;
