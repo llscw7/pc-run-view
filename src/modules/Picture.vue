@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { getAllImages } from '../api/request'
+import { getAllImages, deleteData } from '../api/request'
 import BigNumber from "bignumber.js";
 import { Close, Sort, More, Delete } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
@@ -95,6 +95,20 @@ const handleDelete = () => {
     )
     .then(() => {
         console.log('删除项目')
+        const images = []
+        for(let pic of picture.value) {
+            if(pic.checked) {
+                images.push(pic.url)
+            }
+        }
+        deleteData({
+            images: images
+        })
+        .then(res=>{
+            if(res.status.code !== -1) {
+                picture.value = picture.value.filter(item=>!item.checked)
+            }
+        })
     })
     .catch(() => {
         console.log('取消删除')

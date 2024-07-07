@@ -17,3 +17,9 @@ export const submitData = (data: submitData): Promise<ResponseParam.Result> => {
 export const getAllImages = (): Promise<string[]> => {
     return http.get('/allImage')
 }
+
+export const deleteData = (data: deleteData): Promise<ResponseParam.Result> => {
+    return http.post('/delete', {
+        data
+    })
+}
