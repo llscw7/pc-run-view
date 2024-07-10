@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { getAllImages, deleteData } from '../api/request'
 import BigNumber from "bignumber.js";
-import { Close, Sort, More, Delete } from '@element-plus/icons-vue'
+import { Close, Sort, More, Delete, CircleClose, CircleCheck } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 
 const picture = ref<PictureItem[]>([])
@@ -84,6 +84,13 @@ const handleCancel = () => {
     })
 }
 
+const handleAll = () => {
+    picture.value = picture.value.map(item=>{
+        item.checked = true
+        return item
+    })
+}
+
 const handleDelete = () => {
     ElMessageBox.confirm(
         '这些项目将被彻底删除',
@@ -134,7 +141,28 @@ const handleDelete = () => {
                 <el-icon :size="17"><Sort /></el-icon>
             </div>
             <div class="tool more">
-                <el-icon :size="17"><More /></el-icon>
+                <el-popover
+                    popper-class="more-popover"
+                    placement="bottom-end"
+                    :width="200"
+                    trigger="hover"
+                    :show-arrow="false"
+                >
+                    <template #reference>
+                        <el-icon :size="17"><More /></el-icon>
+                    </template>
+                    <ul class="more-wrap">
+                        <li class="more-item" @click="handleAll">
+                            <el-icon><CircleCheck /></el-icon>
+                            <span>全选</span>
+                        </li>
+                        <li class="more-item" @click="handleCancel">
+                            <el-icon><CircleClose /></el-icon>
+                            <span>不选择任何项目</span>
+                        </li>
+                    </ul>
+                </el-popover>
+                
             </div>
         </div>
         <div class="picture-gallery">
@@ -273,5 +301,27 @@ const handleDelete = () => {
         box-shadow: inset 0px 0px 0px 3px #4091ff;
         border-radius: 4px;
     }
+}
+.more-wrap {
+    padding: 8px 0;
+    .more-item {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 10px 15px;
+        box-sizing: border-box;
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.1)
+        }
+        span {
+            margin-left: 8px;
+        }
+    }
+}
+</style>
+
+<style>
+.el-popover.el-popper.more-popover {
+    padding: 0;
 }
 </style>
