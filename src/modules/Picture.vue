@@ -9,69 +9,16 @@ const picture = ref<PictureItem[]>([])
 
 onMounted(async ()=>{
     const res = await getAllImages()
-    picture.value = res.map((item: string)=>{
+    console.log(res,'-----', typeof res[0].modifiedTime)
+    picture.value = res.map((item: allImageItem)=>{
         return {
-            url: item,
+            url: item.url,
+            modifiedTime: item.modifiedTime,
             checked: false,
         }
     })
-    const msgs = []
-    for(let v of res.slice(0,10)) {
-        const msg = await getImageMessage(v)
-        msgs.push(msg)
-    }
-    console.log(msgs,'====000')
-    test(msgs)
 })
 
-const test = (arr: any, w = 800) => {
-    let width = Infinity
-    let index = -1
-    for(let i = 0; i < arr.length; i++) {
-        if(width > arr[i].width) {
-            width = arr[i].width
-            index = i
-        }
-    }
-    console.log(width, '====', index)
-    let maxH = arr[index]?.height || 0
-    const res = testW(arr, maxH)
-    if(res) {
-        
-    }
-}
-
-const testW = (arr: any, maxH: number) => {
-    let sum = 0
-    let res = []
-    for(let i = 0; i < arr.length; i++) {
-        const w = new BigNumber(arr[i].width)
-        const h = new BigNumber(arr[i].height)
-        const tmp = new BigNumber(maxH)
-        const newW = w.div(h).times(tmp).toFormat(0).toString()
-        sum += +newW
-        res.push({
-            width: newW,
-            height: maxH
-        })
-        if(sum > 800) return false
-        if(sum === 800) return res
-        console.log(newW,'------222')
-    }
-}
-
-const getImageMessage = async (url: string) => {
-    const img = new Image()
-    return new Promise((resolve, reject) => {
-        img.onload = () => {
-            resolve({
-                width: img.width,
-                height: img.height
-            })
-        }
-        img.src = url
-    })
-}
 
 const count = computed(()=>{
     return picture.value.filter(item=>item.checked).length

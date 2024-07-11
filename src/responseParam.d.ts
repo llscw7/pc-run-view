@@ -41,7 +41,13 @@ interface ImageItem {
 
 interface PictureItem {
   url: string;
+  modifiedTime: string;
   checked: boolean;
+}
+
+interface allImageItem {
+  url: string;
+  modifiedTime: string;
 }
 
 declare namespace ResponseParam {

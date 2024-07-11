@@ -14,7 +14,7 @@ export const submitData = (data: submitData): Promise<ResponseParam.Result> => {
     })
 }
 
-export const getAllImages = (): Promise<string[]> => {
+export const getAllImages = (): Promise<allImageItem[]> => {
     return http.get('/allImage')
 }
 
