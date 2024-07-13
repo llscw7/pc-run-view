@@ -19,6 +19,15 @@ onMounted(async ()=>{
     })
 })
 
+const handleSort = () => {
+    picture.value = picture.value.sort((a,b)=>{
+        const t1 = new Date(a.modifiedTime).getTime()
+        const t2 = new Date(b.modifiedTime).getTime()
+        return t2-t1
+    })
+    console.log(picture.value,'----;;;;')
+}
+
 
 const count = computed(()=>{
     return picture.value.filter(item=>item.checked).length
@@ -84,7 +93,7 @@ const handleDelete = () => {
             <div class="tool delete" v-if="count" @click="handleDelete">
                 <el-icon :size="18"><Delete /></el-icon>
             </div>
-            <div class="tool sort">
+            <div class="tool sort" @click="handleSort">
                 <el-icon :size="17"><Sort /></el-icon>
             </div>
             <div class="tool more">
