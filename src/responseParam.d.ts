@@ -42,12 +42,14 @@ interface ImageItem {
 interface PictureItem {
   url: string;
   modifiedTime: string;
+  name: string;
   checked: boolean;
 }
 
 interface allImageItem {
   url: string;
   modifiedTime: string;
+  name: string;
 }
 
 declare namespace ResponseParam {

@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { getAllImages, deleteData } from '../api/request'
 import BigNumber from "bignumber.js";
-import { Close, Sort, More, Delete, CircleClose, CircleCheck } from '@element-plus/icons-vue'
+import { Reading, Calendar, Close, Sort, More, Delete, CircleClose, CircleCheck, Top, Bottom } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 
 const picture = ref<PictureItem[]>([])
@@ -14,18 +14,48 @@ onMounted(async ()=>{
         return {
             url: item.url,
             modifiedTime: item.modifiedTime,
+            name: item.name,
             checked: false,
         }
     })
+    sortPicture()
 })
 
-const handleSort = () => {
-    picture.value = picture.value.sort((a,b)=>{
-        const t1 = new Date(a.modifiedTime).getTime()
-        const t2 = new Date(b.modifiedTime).getTime()
-        return t2-t1
-    })
+const sortType = ref('time')
+const sortFlag = ref(0)
+const sortPicture = () => {
+    if(sortType.value === 'time') {
+        picture.value = picture.value.sort((a,b)=>{
+            const t1 = new Date(a.modifiedTime).getTime()
+            const t2 = new Date(b.modifiedTime).getTime()
+            if(sortFlag.value) {
+                return t1-t2
+            }else {
+                return t2-t1
+            }
+        })
+    }
+    else if(sortType.value === 'name') {
+        if(sortFlag.value) {
+            picture.value = picture.value.sort((a,b)=> a.name.localeCompare(b.name))
+        }else {
+            picture.value = picture.value.sort((a,b)=> b.name.localeCompare(a.name))
+        }
+    }
     console.log(picture.value,'----;;;;')
+}
+/**
+ * TODO: 区分时间正序和倒序
+ * @param {number} type - 1: 升序  0: 降序
+ */
+const handleSort = (type: number) => {
+    sortFlag.value = type
+    sortPicture()
+}
+
+const changeSortType = (type: string) => {
+    sortType.value = type
+    sortPicture()
 }
 
 
@@ -93,8 +123,41 @@ const handleDelete = () => {
             <div class="tool delete" v-if="count" @click="handleDelete">
                 <el-icon :size="18"><Delete /></el-icon>
             </div>
-            <div class="tool sort" @click="handleSort">
-                <el-icon :size="17"><Sort /></el-icon>
+            <div class="tool sort">
+                <el-popover
+                    popper-class="more-popover"
+                    placement="bottom-end"
+                    :width="200"
+                    trigger="hover"
+                    :show-arrow="false"
+                >
+                    <template #reference>
+                        <el-icon :size="17"><Sort /></el-icon>
+                    </template>
+                    <ul class="more-wrap">
+                        <li class="more-item" @click="changeSortType('time')">
+                            <div class="checkout-icon" :class="{show: sortType === 'time'}"></div>
+                            <el-icon><Calendar /></el-icon>
+                            <span>拍摄日期</span>
+                        </li>
+                        <li class="more-item" @click="changeSortType('name')">
+                            <div class="checkout-icon" :class="{show: sortType === 'name'}"></div>
+                            <el-icon><Reading /></el-icon>
+                            <span>名字</span>
+                        </li>
+                        <li class="more-line"></li>
+                        <li class="more-item" @click="handleSort(1)">
+                            <div class="checkout-icon" :class="{show: sortFlag === 1}"></div>
+                            <el-icon><Top /></el-icon>
+                            <span>升序</span>
+                        </li>
+                        <li class="more-item" @click="handleSort(0)">
+                            <div class="checkout-icon" :class="{show: sortFlag === 0}"></div>
+                            <el-icon><Bottom /></el-icon>
+                            <span>降序</span>
+                        </li>
+                    </ul>
+                </el-popover>
             </div>
             <div class="tool more">
                 <el-popover
@@ -272,6 +335,23 @@ const handleDelete = () => {
         span {
             margin-left: 8px;
         }
+    }
+    .more-line {
+        width: 100%;
+        height: 1px;
+        background-color: #dedfe0;
+        margin: 2px 0;
+    }
+    .checkout-icon {
+        width: 8px;
+        height: 8px;
+        margin-right: 10px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.6);
+        visibility: hidden;
+    }
+    .checkout-icon.show {
+        visibility: visible;
     }
 }
 </style>
