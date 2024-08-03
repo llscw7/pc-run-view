@@ -107,6 +107,15 @@ const handleDelete = () => {
         console.log('取消删除')
     })
 }
+
+const handlePreview = (url: string) => {
+    const data = {
+        url,
+        srcList: picture.value.map(item=>item.url)
+    }
+
+    window.electronAPI.previewPicture(data)
+}
 </script>
 
 <template>
@@ -185,7 +194,12 @@ const handleDelete = () => {
             </div>
         </div>
         <div class="picture-gallery">
-            <div class="picture-wrap" v-for="(item, index) in picture" :key="index">
+            <div 
+                class="picture-wrap" 
+                v-for="(item, index) in picture" 
+                :key="index"
+                @dblclick="handlePreview(item.url)"
+            >
                 <img class="image" :src="item.url" alt="" >
                 <div class="picture-select" :class="{'actived': item.checked}">
                     <el-checkbox class="select-item" :class="{'actived': item.checked}" v-model="item.checked" />
