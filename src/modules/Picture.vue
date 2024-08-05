@@ -279,6 +279,7 @@ const handlePreview = (url: string) => {
         box-sizing: border-box;
         border-radius: 4px;
         overflow: hidden;
+        user-select: none;
         .image {
             position: relative;
             width: 100%;
