@@ -7,6 +7,7 @@ const value1 = ref(true)
 <template>
     <div class="setting">
         <div class="setting-container">
+            <div class="setting-label">个性化</div>
             <div class="setting-wrap" v-for="item in 3">
                 <div class="icon">
                     <el-icon :size="25"><Orange /></el-icon>
@@ -34,6 +35,11 @@ const value1 = ref(true)
         transform: translateX(-50%);
         max-width: 800px;
         overflow: hidden;
+        .setting-label {
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 40px;
+        }
         .setting-wrap {
             position: relative;
             display: flex;

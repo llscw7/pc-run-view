@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router'
 import {
   Menu as IconMenu,
   Setting,
-  Picture
+  Picture,
+  Help
 } from '@element-plus/icons-vue'
 import menusvg from './static/menu.svg'
 
@@ -57,6 +58,10 @@ watch(route, (cur, pre)=>{
         <el-menu-item index="/setting">
           <el-icon><setting /></el-icon>
           <template #title>设置</template>
+        </el-menu-item>
+        <el-menu-item index="/test">
+          <el-icon><Help /></el-icon>
+          <template #title>测试功能</template>
         </el-menu-item>
       </el-menu>
     </div>

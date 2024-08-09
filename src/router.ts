@@ -3,6 +3,7 @@ import Home from './modules/Home.vue'
 import About from './modules/About.vue'
 import Picture from './modules/Picture.vue'
 import Setting from './modules/Setting.vue'
+import Test from './modules/Test.vue'
 
 const routes = [
     {
@@ -16,6 +17,9 @@ const routes = [
     },
     {
         path: '/setting', component: Setting
+    },
+    {
+        path: '/test', component: Test
     }
 ]
 
