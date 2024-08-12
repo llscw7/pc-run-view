@@ -1,20 +1,26 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { FolderOpened, ArrowDown } from '@element-plus/icons-vue'
+
+const treeMap = ref()
+
 onMounted(()=>{
-    window.electronAPI.readdir().then((res: any)=>{
+    window.electronAPI.readdir('H:\\').then((res: readDirParams)=>{
         console.log(res,'======')
+        treeMap.value = res.dir
     })
 })
+
+
 </script>
 
 <template>
     <div class="test">
         <div class="dir-tree">
-            <div class="tree-item" v-for="item in 3">
+            <div class="tree-item" v-for="item in treeMap" v-if="treeMap?.length">
                 <div class="tree-wrap">
                     <div class="head-icon"><el-icon><FolderOpened /></el-icon></div>
-                    <div class="tree-name">文件夹</div>
+                    <div class="tree-name">{{ item }}</div>
                     <div class="end-icon"><el-icon><ArrowDown /></el-icon></div>
                 </div>
                 <div class="tree-children">

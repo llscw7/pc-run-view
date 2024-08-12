@@ -84,3 +84,8 @@ interface collectListParam {
   name: string;
   value: string;
 }
+
+interface readDirParams {
+  file: string[];
+  dir: string[];
+}
