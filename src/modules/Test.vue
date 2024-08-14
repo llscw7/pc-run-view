@@ -1,34 +1,36 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { FolderOpened, ArrowDown } from '@element-plus/icons-vue'
+import { FolderOpened, ArrowDown, Files } from '@element-plus/icons-vue'
 
 const treeMap = ref()
 
 onMounted(()=>{
-    window.electronAPI.readdir('H:\\').then((res: readDirParams)=>{
+    window.electronAPI.readdir('H:\\').then((res: ReadDirData[])=>{
         console.log(res,'======')
-        treeMap.value = res.dir
+        treeMap.value = res
     })
 })
 
+const handleShow = (data: ReadDirData, index: number) => {
+    window.electronAPI.readdir(data.path, data.id, data.level + 1).then((res: ReadDirData[])=>{
+        console.log(res,'-------', index)
+        treeMap.value.splice(index+1, 0, ...res)
+    })
+}
 
 </script>
 
 <template>
     <div class="test">
         <div class="dir-tree">
-            <div class="tree-item" v-for="item in treeMap" v-if="treeMap?.length">
-                <div class="tree-wrap">
-                    <div class="head-icon"><el-icon><FolderOpened /></el-icon></div>
-                    <div class="tree-name">{{ item }}</div>
-                    <div class="end-icon"><el-icon><ArrowDown /></el-icon></div>
-                </div>
-                <div class="tree-children">
-                    <div class="tree-wrap">
-                        <div class="head-icon"><el-icon><FolderOpened /></el-icon></div>
-                        <div class="tree-name">文件夹</div>
-                        <div class="end-icon"><el-icon><ArrowDown /></el-icon></div>
+            <div class="tree-item" v-for="(item, index) in treeMap"  v-if="treeMap?.length">
+                <div class="tree-wrap" :class="[`level-${item.level}`]" @click="handleShow(item, index)">
+                    <div class="head-icon">
+                        <el-icon v-if="item.type === 'dir'"><FolderOpened /></el-icon>
+                        <el-icon v-else><Files /></el-icon>
                     </div>
+                    <div class="tree-name">{{ item.name }}</div>
+                    <div class="end-icon" v-if="item.type === 'dir'"><el-icon><ArrowDown /></el-icon></div>
                 </div>
             </div>
         </div>
@@ -60,10 +62,11 @@ onMounted(()=>{
                 background-color: rgba(0, 0, 0, 0.1);
             }
         }
-        .tree-children {
-            .tree-wrap {
-                padding-left: 40px;
-            }
+        .tree-wrap.level-1 {
+            padding-left: 40px;
+        }
+        .tree-wrap.level-2 {
+            padding-left: 80px;
         }
     }
     .head-icon {

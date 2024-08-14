@@ -85,7 +85,11 @@ interface collectListParam {
   value: string;
 }
 
-interface readDirParams {
-  file: string[];
-  dir: string[];
+interface ReadDirData {
+  id: number;
+  name: string;
+  path: string;
+  type: string;
+  level: number;
+  parentId: number;
 }
