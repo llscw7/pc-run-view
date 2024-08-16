@@ -53,7 +53,7 @@ const handleShow = (data: ReadDirData, index: number) => {
             display: flex;
             align-items: center;
             position: relative;
-            padding: 10px 20px;
+            padding: 10px 50px 10px 20px;
             margin-bottom: 4px;
             box-sizing: border-box;
             border-radius: 4px;
@@ -62,12 +62,11 @@ const handleShow = (data: ReadDirData, index: number) => {
                 background-color: rgba(0, 0, 0, 0.1);
             }
         }
-        .tree-wrap.level-1 {
-            padding-left: 40px;
-        }
-        .tree-wrap.level-2 {
-            padding-left: 80px;
-        }
+        each(range(20), {
+            .tree-wrap.level-@{value} {
+                padding-left: (@value*20 + 20px);
+            }
+        });
     }
     .head-icon {
         margin-right: 6px;
@@ -77,10 +76,13 @@ const handleShow = (data: ReadDirData, index: number) => {
     }
     .tree-name {
         font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
     }
     .end-icon {
         position: absolute;
         right: 20px;
     }
 }
+ 
 </style>
