@@ -1,20 +1,39 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { FolderOpened, ArrowDown, Files } from '@element-plus/icons-vue'
 
 const treeMap = ref()
 
+
 onMounted(()=>{
     window.electronAPI.readdir('H:\\').then((res: ReadDirData[])=>{
         console.log(res,'======')
-        treeMap.value = res
+        treeMap.value = sortTreeMap(res)
     })
 })
+
+/**
+ * 排序，先排列文件夹列表，再跟上文件列表
+ */
+const sortTreeMap = (arr: ReadDirData[]) => {
+    if(!Array.isArray(arr)) return []
+    const res = arr.sort((a,b)=>{
+        if(a.type === 'dir' && b.type === 'file') {
+            return -1;
+        }
+        if(a.type === 'file' && b.type === 'dir') {
+            return 1;
+        }
+        return 0
+    })
+    return res
+}
 
 const handleShow = (data: ReadDirData, index: number) => {
     window.electronAPI.readdir(data.path, data.id, data.level + 1).then((res: ReadDirData[])=>{
         console.log(res,'-------', index)
-        treeMap.value.splice(index+1, 0, ...res)
+        const arr = sortTreeMap(res)
+        treeMap.value.splice(index+1, 0, ...arr)
     })
 }
 
