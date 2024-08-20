@@ -30,11 +30,31 @@ const sortTreeMap = (arr: ReadDirData[]) => {
 }
 
 const handleShow = (data: ReadDirData, index: number) => {
-    window.electronAPI.readdir(data.path, data.id, data.level + 1).then((res: ReadDirData[])=>{
-        console.log(res,'-------', index)
-        const arr = sortTreeMap(res)
-        treeMap.value.splice(index+1, 0, ...arr)
-    })
+    if(data.show) {
+        treeMap.value[index].show = false
+        const level = treeMap.value[index].level
+        const len = treeMap.value.length
+        let end = index
+        for(let i = index + 1; i < len; i++) {
+            if(treeMap.value[i].level <= level) {
+                end = i
+                break;
+            }
+        }
+        if(end > index) {
+            treeMap.value.splice(index + 1, end - index - 1)
+        }else {
+            treeMap.value.splice(index + 1, len - index - 1)
+        }
+    }else {
+        treeMap.value[index].show = true
+        window.electronAPI.readdir(data.path, data.id, data.level + 1).then((res: ReadDirData[])=>{
+            console.log(res,'-------', index)
+            const arr = sortTreeMap(res)
+            treeMap.value.splice(index+1, 0, ...arr)
+        })
+    }
+    
 }
 
 </script>

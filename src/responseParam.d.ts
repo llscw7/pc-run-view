@@ -92,4 +92,5 @@ interface ReadDirData {
   type: string;
   level: number;
   parentId: number;
+  show?: boolean;
 }
